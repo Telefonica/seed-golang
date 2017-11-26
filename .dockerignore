@@ -1,0 +1,3 @@
+*
+!build/bin/*
+!delivery/docker/release/entrypoint.sh

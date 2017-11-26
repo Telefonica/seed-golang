@@ -1,0 +1,29 @@
+{
+    "title": "User create schema",
+    "type": "object",
+    "additionalProperties": true,
+    "required": ["login", "name", "msisdn"],
+    "properties": {
+      "login": {
+        "type": "string",
+        "minLength": 2,
+        "maxLength": 32
+      },
+      "name": {
+        "type": "string",
+        "minLength": 2,
+        "maxLength": 128
+      },
+      "msisdn": {
+        "type": "string",
+        "pattern": "^\\d{9,11}$"
+      },
+      "role": {
+        "enum": [
+          "user",
+          "admin"
+        ]
+      }
+    }
+  }
+  

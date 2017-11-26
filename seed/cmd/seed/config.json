@@ -1,0 +1,7 @@
+{
+  "address": ":9000",
+  "basePath": "/seed",
+  "logLevel": "INFO",
+  "mongoUrl": "localhost",
+  "mongoDatabase": "seed"
+}
