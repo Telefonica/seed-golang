@@ -2,7 +2,7 @@ GITHUB_SERVER            := $(shell delivery/scripts/github.sh get_server)
 GITHUB_USER              := $(shell delivery/scripts/github.sh get_user)
 GITHUB_REPO              := $(shell delivery/scripts/github.sh get_repo)
 GITHUB_API               := $(shell delivery/scripts/github.sh get_api)
-GITHUB_TOKEN             ?= 06161df89a5435488d6ac4e7de1d5c492a014637
+GITHUB_TOKEN             ?= 6d9bd04a8a130939d5161c95dba0e42c9bb02219
 
 DOCKER_REGISTRY_AUTH     ?=
 DOCKER_REGISTRY          ?= dockerhub.hi.inet

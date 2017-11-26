@@ -65,9 +65,9 @@ get_revision() {
 
 # Get the release notes from a last tag to HEAD.
 get_release_notes() {
-    local range="$(get_last_tag)"
-    [ "${range}" == "" ] && range="HEAD" || range="${range}...HEAD"
-    git log "${range}" --pretty=format:' - [%h] %s' --reverse
+    local last_tag="$(get_last_tag)"
+    [ "${last_tag}" == "${DEFAULT_VERSION}" ] && range="HEAD" || range="${last_tag}...HEAD"
+    git log "${range}" --pretty=format:' - [%h] %s'
 }
 
 $@
