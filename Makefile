@@ -6,12 +6,12 @@ GITHUB_TOKEN             ?= 06161df89a5435488d6ac4e7de1d5c492a014637
 
 DOCKER_REGISTRY_AUTH     ?=
 DOCKER_REGISTRY          ?= dockerhub.hi.inet
-DOCKER_ORG               ?= $(GITHUB_USER)
-DOCKER_PROJECT           ?= $(GITHUB_REPO)
+DOCKER_ORG               ?= $(shell echo "$(GITHUB_USER)" | tr '[:upper:]' '[:lower:]')
+DOCKER_PROJECT           ?= $(shell echo "$(GITHUB_REPO)" | tr '[:upper:]' '[:lower:]')
 DOCKER_API_VERSION       ?=
 DOCKER_IMAGE             ?= $(if $(DOCKER_REGISTRY),$(DOCKER_REGISTRY)/$(DOCKER_ORG)/$(DOCKER_PROJECT),$(DOCKER_ORG)/$(DOCKER_PROJECT))
 
-DOCKER_COMPOSE_PROJECT   := $(shell echo "$(DOCKER_PROJECT)" | tr '[:upper:]' '[:lower:]' | sed -e 's/[^a-z0-9]//g')
+DOCKER_COMPOSE_PROJECT   := $(shell echo "$(DOCKER_PROJECT)" | sed -e 's/[^a-z0-9]//g')
 DOCKER_COMPOSE_SERVICE   := develenv
 DOCKER_COMPOSE_FILE      := delivery/docker/dev/docker-compose.yml
 DOCKER_COMPOSE_GOPATH    := /home/contint/go
