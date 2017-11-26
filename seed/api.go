@@ -135,15 +135,9 @@ func (s *Server) UpdateUser(w http.ResponseWriter, r *http.Request) {
 		govice.ReplyWithError(w, r, err)
 		return
 	}
-	// selector := bson.M{"_id": *userID}
 	update := bson.M{"$set": buildPartialUpdate(&user)}
-	// govice.GetLogger(r).Debug("Selector: %+v. Update: %+v", selector, update)
-	// if err := s.getUsersCollection(r).Update(selector, update); err != nil {
 	if err := s.getUsersCollection(r).UpdateId(*userID, update); err != nil {
-		// info, err := s.getUsersCollection(r).UpdateAll(selector, update)
-		// if err != nil {
 		govice.ReplyWithError(w, r, err)
 		return
 	}
-	// govice.GetLogger(r).Debug("Info: %+v", info)
 }
