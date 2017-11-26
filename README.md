@@ -152,12 +152,76 @@ The following log traces correspond to a conflict with a port that is already in
 {"time":"2017-11-26T10:49:06.6862503Z","lvl":"FATAL","op":"init","svc":"seed","alarm":"SEED_INIT_01","msg":"Error starting server. listen tcp :9000: bind: address already in use"}
 ```
 
-## Known issues
+## DCIP configuration
 
- - It is impossible to migrate a fixed line from nijiHome to niji. It is required to remove the line in nijiHome backend, and then to create a new line in niji backend.
- - It is not implemented the update of the `line_id` for a nijiHome user. Note that the `line_id` must be stored in the niji backend as well because it is required to invoke the McAfee API.
- - If the fixed line is removed from nijiHome backend, the `line_id` is not removed from the bundle resource in the niji backend.
- - If a user is migrated from niji backend to nijiHome backend, the request to create the user in nijiHome backend will not contain the external_id and the user settings (e.g. if onlineProtection is enabled or not).
+### DCIP jobs
+
+- Create a component to host the project jobs by executing `_component-setup`
+- Build `_docker-slave-setup` (with branch: "master" and RAM: 2048)
+- Configure `_docker-slave-builder`:
+  - Disable automatic hook. Avoid creating the docker image whenever there is a merge in master branch.
+  - Configure the location to the Dockerfile for development. Set as `Build Context` in `Docker Build and Publish`: **delivery/docker/dev**.
+- Execute `_docker-slave-builder` job to create the dockerhub.hi.inet/dcip/seed-golang image that is going to be used in all the dcip jobs.
+- Create `pipeline-01-pull`. This pipeline is triggered by pull requests:
+  - Github project: https://github.com/Telefonica/seed-golang
+  - Restrict project to: seed-golang
+  - Use a custom workspace directory: /home/contint/go/src/github.com/Telefonica/seed-golang
+  - Git:
+    - Repository URL: git@github.com:Telefonica/seed-golang.git
+      - Refspec: +refs/pull/*:refs/remotes/origin/pr/*
+    - Branches to build: ${sha1}
+  - Trigger:
+    - Check "GitHub Pull Request Builder"
+      - GitHub API credentials: https://api.github.com
+      - Check "Use github hooks for build triggering"
+      - Trigger phrase: "\Qtest\E"
+      - Check: "Build every pull request automatically without asking (Dangerous!)."
+  - Execution environment:
+    - Check "Color ANSI Console Output"
+  - Add execute step: "Execute command line (shell)" with:
+      ```sh
+      #!/bin/bash
+      source /home/contint/.bashrc
+      delivery/docker/dev/entrypoint.sh
+      make pipeline-pull
+      ```
+  - Actions:
+    - Add "Set build status on Github commit"
+- Create `pipeline-02-dev` by cloning `pipeline-01-pull`. This pipeline is trigger after a merge in master branch.
+  - Execution is parameterized:
+    - Add boolean value. Name: RELEASE.
+    - Add text parameter. Name: GIT_REVISION. Default: master.
+  - Git:
+    - Empty Refspec
+    - Branches to build: ${GIT_REVISION}
+  - Trigger:
+    - Uncheck: "GitHub Pull Request Builder"
+    - Check: "GitHub hook trigger for GITScm polling"
+  - Update execute step: "Execute command line (shell)" with:
+      ```sh
+      #!/bin/bash
+      source /home/contint/.bashrc
+      delivery/docker/dev/entrypoint.sh
+      make pipeline-dev
+      ```
+  - Actions:
+    - Remove "Set build status on Github commit"
+
+### GitHub WebHooks
+
+See [Git WebHooks in DCIP](https://wikis.hi.inet/epg/index.php/DCIP#Git_webhooks).
+
+- Add team `CI (w+r)` with "write" permissions
+- Add webhook for Pull request:
+  - Payload URL: "http://dcip.tid.es/ghprbhook/"
+  - Content type: "application/x-www-form-urlencoded"
+  - Let me select individual events:
+    - Check "Issue comment" and "Pull request"
+    - Uncheck "Push"
+- Add webhook for merge:
+  - Payload URL: "http://dcip.tid.es/github-webhook/"
+  - Content type: "application/json"
+  - Just the push event
 
 ## License
 
