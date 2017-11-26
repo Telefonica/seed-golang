@@ -140,8 +140,8 @@ test-e2e:
 
 package:
 	$(info) "Creating the docker image $(DOCKER_IMAGE):$(BUILD_VERSION)"
-	docker $(DOCKER_ARGS) build -f delivery/docker/release/Dockerfile -t $(DOCKER_IMAGE):$(BUILD_VERSION) .
-	docker $(DOCKER_ARGS) tag $(DOCKER_IMAGE):$(BUILD_VERSION) $(DOCKER_IMAGE):$(PRODUCT_VERSION)
+	BUILD_VERSION=$(BUILD_VERSION) docker $(DOCKER_ARGS) build -f delivery/docker/release/Dockerfile -t $(DOCKER_IMAGE):$(BUILD_VERSION) .
+	BUILD_VERSION=$(BUILD_VERSION) docker $(DOCKER_ARGS) tag $(DOCKER_IMAGE):$(BUILD_VERSION) $(DOCKER_IMAGE):$(PRODUCT_VERSION)
 
 publish:
 	$(info) "Publishing the docker image $(DOCKER_IMAGE):$(BUILD_VERSION)"
