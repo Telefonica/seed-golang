@@ -53,10 +53,11 @@ Commands:
   test-e2e:        Pass e2e tests
   package:         Create the docker image
   publish:         Publish the docker image
+  deploy:          Deploy the service (see delivery/deploy/docker-compose.yml)
+  undeploy:        Undeploy the service (see delivery/deploy/docker-compose.yml)
   promote:         Promote a docker image using the environment DOCKER_PROMOTION_TAG
   release:         Create a new release (tag and release notes)
   run:             Launch the service with docker-compose (for testing purposes)
-  clean:           Clean the project
   pipeline-pull:   Launch pipeline to handle a pull request
   pipeline-dev:    Launch pipeline to handle the merge of a pull request
   pipeline:        Launch the pipeline for the selected environment
@@ -66,14 +67,25 @@ Commands:
 endef
 export help
 
-.PHONY: help dep build-deps build-config build \
+.PHONY: help clean-build clean-vendor clean build-deps build-config build \
 		test-e2e-local test-e2e \
-		package publish release-deps release run clean \
+		package publish deploy undeploy promote release-deps release run \
 		pipeline-pull pipeline-dev pipeline \
 		develenv-up develenv-sh develenv-down
 
 help:
 	@echo "$$help"
+
+clean-build:
+	$(info) "Cleaning the project"
+	go clean
+	rm -rf build/
+
+clean-vendor:
+	$(info) "Cleaning the vendor directory"
+	rm -rf vendor/
+
+clean: clean-build clean-vendor
 
 build-deps:
 	$(info) "Installing golang dependencies"
@@ -123,7 +135,8 @@ test-e2e-local:
 
 test-e2e:
 	$(info) "Passing e2e tests"
-	test/e2e/test-e2e.sh
+	# Need a method to get the public IP address for seed service after deploy
+	#test/e2e/test-e2e.sh
 
 package:
 	$(info) "Creating the docker image $(DOCKER_IMAGE):$(BUILD_VERSION)"
@@ -134,6 +147,14 @@ publish:
 	$(info) "Publishing the docker image $(DOCKER_IMAGE):$(BUILD_VERSION)"
 	docker $(DOCKER_ARGS) push $(DOCKER_IMAGE):$(BUILD_VERSION)
 	docker $(DOCKER_ARGS) push $(DOCKER_IMAGE):$(PRODUCT_VERSION)
+
+deploy:
+	$(info) "Deploying the service $(DOCKER_IMAGE):$(BUILD_VERSION) in environment $(ENVIRONMENT)"
+	docker-compose $(DOCKER_ARGS) -p "$(DOCKER_PROJECT)$(ENVIRONMENT)" -f delivery/deploy/docker-compose.yml up -d
+
+undeploy:
+	$(info) "Undeploying the service $(DOCKER_IMAGE):$(BUILD_VERSION) in environment $(ENVIRONMENT)"
+	docker-compose $(DOCKER_ARGS) -p "$(DOCKER_PROJECT)$(ENVIRONMENT)" -f delivery/deploy/docker-compose.yml down
 
 promote:
 	$(info) "Promoting the docker image $(DOCKER_IMAGE):$(BUILD_VERSION) to $(DOCKER_IMAGE):$(DOCKER_PROMOTION_TAG)"
@@ -159,26 +180,10 @@ run: build
 	$(info) "Launching the service"
 	cd build/bin && ./seed 
 
-clean:
-	$(info) "Cleaning the project"
-	go clean
-	rm -rf build/ vendor/ test/acceptance/src/_output/ test/acceptance/src/logs/
-
-clean-build:
-	$(info) "Cleaning the project"
-	go clean
-	rm -rf build/
-
-clean-vendor:
-	$(info) "Cleaning the vendor directory"
-	rm -rf vendor/
-
-clean: clean-build clean-vendor
-
 pipeline-pull: build test-e2e-local
 	$(info) "Completed successfully pipeline-pull"
 
-pipeline-dev:  build test-e2e-local package publish promote release
+pipeline-dev:  build test-e2e-local package publish deploy test-e2e undeploy promote release
 	$(info) "Completed successfully pipeline-dev"
 
 pipeline:      pipeline-$(ENVIRONMENT)

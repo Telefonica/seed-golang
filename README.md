@@ -1,5 +1,5 @@
-[![Build Status](https://dcip.hi.inet/job/jorgelg/job/seed-golang/job/pipeline-02-dev/badge/icon)](https://dcip.hi.inet/job/jorgelg/job/seed-golang/job/pipeline-02-dev)
-[![DockerHub](https://img.shields.io/docker/automated/jrottenberg/ffmpeg.svg)](http://artifactory.hi.inet/artifactory/webapp/#/artifacts/browse/simple/General/docker/Telefonica/seed-golang)
+[![Build Status](https://dcip.hi.inet/buildStatus/icon?job=jorgelg/seed-golang/pipeline-02-dev)](https://dcip.hi.inet/job/jorgelg/job/seed-golang/job/pipeline-02-dev/)
+[![DockerHub](https://img.shields.io/docker/automated/jrottenberg/ffmpeg.svg)](http://artifactory.hi.inet/artifactory/webapp/#/artifacts/browse/tree/General/docker/telefonica/seed-golang)
 
 # seed-golang
 
@@ -26,10 +26,11 @@ Commands:
   test-e2e:        Pass e2e tests
   package:         Create the docker image
   publish:         Publish the docker image
+  deploy:          Deploy the service (see delivery/deploy/docker-compose.yml)
+  undeploy:        Undeploy the service (see delivery/deploy/docker-compose.yml)
   promote:         Promote a docker image using the environment DOCKER_PROMOTION_TAG
   release:         Create a new release (tag and release notes)
   run:             Launch the service with docker-compose (for testing purposes)
-  clean:           Clean the project
   pipeline-pull:   Launch pipeline to handle a pull request
   pipeline-dev:    Launch pipeline to handle the merge of a pull request
   pipeline:        Launch the pipeline for the selected environment
