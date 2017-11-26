@@ -97,7 +97,7 @@ make pipeline-dev RELEASE=true
 | address | ADDRESS | :9000 | Address `ip:port` (ip is optional) where the service is listening |
 | basePath | BASE_PATH | /seed | API base path. |
 | logLevel | LOG_LEVEL | INFO | Log level. Possible values are: `DEBUG`, `INFO`, `WARN`, `ERROR`, `FATAL` |
-| mongoUrl | MONGO_URL | localhost | Mongo URL |
+| mongoUrl | MONGO_URL | 127.0.0.1 | Mongo URL |
 | mongoDatabase | MONGO_DATABASE | seed | Mongo database |
 
 The default configuration is:
@@ -107,7 +107,7 @@ The default configuration is:
   "address": ":9000",
   "basePath": "/seed",
   "logLevel": "INFO",
-  "mongoUrl": "localhost",
+  "mongoUrl": "127.0.0.1",
   "mongoDatabase": "seed"
 }
 ```
@@ -121,7 +121,7 @@ It is possible to override the default log level `INFO` by using the environment
 The following log entries are written when the service is started up with default configuration:
 
 ```json
-{"time":"2017-11-26T10:44:38.2435417Z","lvl":"INFO","op":"init","svc":"seed","msg":"Configuration: {\"address\":\":9000\",\"basePath\":\"/seed\",\"logLevel\":\"INFO\",\"mongoUrl\":\"localhost\",\"mongoDatabase\":\"seed\"}"}
+{"time":"2017-11-26T10:44:38.2435417Z","lvl":"INFO","op":"init","svc":"seed","msg":"Configuration: {\"address\":\":9000\",\"basePath\":\"/seed\",\"logLevel\":\"INFO\",\"mongoUrl\":\"127.0.0.1\",\"mongoDatabase\":\"seed\"}"}
 {"time":"2017-11-26T10:44:38.2548223Z","lvl":"INFO","op":"init","svc":"seed","msg":"Starting server at :9000"}
 ```
 
@@ -146,7 +146,7 @@ Relevant log entry fields:
 The following log traces correspond to a conflict with a port that is already in use when the service is launched. It generates an alarm `SEED_INIT_01`:
 
 ```json
-{"time":"2017-11-26T10:49:06.6620696Z","lvl":"INFO","op":"init","svc":"seed","msg":"Configuration: {\"address\":\":9000\",\"basePath\":\"/seed\",\"logLevel\":\"DEBUG\",\"mongoUrl\":\"localhost\",\"mongoDatabase\":\"seed\"}"}
+{"time":"2017-11-26T10:49:06.6620696Z","lvl":"INFO","op":"init","svc":"seed","msg":"Configuration: {\"address\":\":9000\",\"basePath\":\"/seed\",\"logLevel\":\"DEBUG\",\"mongoUrl\":\"127.0.0.1\",\"mongoDatabase\":\"seed\"}"}
 {"time":"2017-11-26T10:49:06.6775121Z","lvl":"INFO","op":"init","svc":"seed","msg":"Starting server at :9000"}
 {"time":"2017-11-26T10:49:06.6862503Z","lvl":"FATAL","op":"init","svc":"seed","alarm":"SEED_INIT_01","msg":"Error starting server. listen tcp :9000: bind: address already in use"}
 ```
