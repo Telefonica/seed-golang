@@ -187,6 +187,8 @@ The following log traces correspond to a conflict with a port that is already in
       ```
   - Actions:
     - Add "Set build status on Github commit"
+    - Publish Cobertura report:
+      - Pattern: build/cover/cover.xml
 - Create `pipeline-02-dev` by cloning `pipeline-01-pull`. This pipeline is trigger after a merge in master branch.
   - Execution is parameterized:
     - Add boolean value. Name: RELEASE.
