@@ -140,8 +140,8 @@ test-e2e:
 
 package:
 	$(info) "Creating the docker image $(DOCKER_IMAGE):$(BUILD_VERSION)"
-	BUILD_VERSION=$(BUILD_VERSION) docker $(DOCKER_ARGS) build -f delivery/docker/release/Dockerfile -t $(DOCKER_IMAGE):$(BUILD_VERSION) .
-	BUILD_VERSION=$(BUILD_VERSION) docker $(DOCKER_ARGS) tag $(DOCKER_IMAGE):$(BUILD_VERSION) $(DOCKER_IMAGE):$(PRODUCT_VERSION)
+	docker $(DOCKER_ARGS) build -f delivery/docker/release/Dockerfile -t $(DOCKER_IMAGE):$(BUILD_VERSION) .
+	docker $(DOCKER_ARGS) tag $(DOCKER_IMAGE):$(BUILD_VERSION) $(DOCKER_IMAGE):$(PRODUCT_VERSION)
 
 publish:
 	$(info) "Publishing the docker image $(DOCKER_IMAGE):$(BUILD_VERSION)"
@@ -150,11 +150,11 @@ publish:
 
 deploy:
 	$(info) "Deploying the service $(DOCKER_IMAGE):$(BUILD_VERSION) in environment $(ENVIRONMENT)"
-	docker-compose $(DOCKER_ARGS) -p "$(DOCKER_PROJECT)$(ENVIRONMENT)" -f delivery/deploy/docker-compose.yml up -d
+	BUILD_VERSION=$(BUILD_VERSION) docker-compose $(DOCKER_ARGS) -p "$(DOCKER_PROJECT)$(ENVIRONMENT)" -f delivery/deploy/docker-compose.yml up -d
 
 undeploy:
 	$(info) "Undeploying the service $(DOCKER_IMAGE):$(BUILD_VERSION) in environment $(ENVIRONMENT)"
-	docker-compose $(DOCKER_ARGS) -p "$(DOCKER_PROJECT)$(ENVIRONMENT)" -f delivery/deploy/docker-compose.yml down
+	BUILD_VERSION=$(BUILD_VERSION) docker-compose $(DOCKER_ARGS) -p "$(DOCKER_PROJECT)$(ENVIRONMENT)" -f delivery/deploy/docker-compose.yml down
 
 promote:
 	$(info) "Promoting the docker image $(DOCKER_IMAGE):$(BUILD_VERSION) to $(DOCKER_IMAGE):$(DOCKER_PROMOTION_TAG)"
