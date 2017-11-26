@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+
+  develenv:
+    build: 
+      context: ../../../
+      dockerfile: delivery/docker/dev/Dockerfile
+      args:
+        GOPATH: ${GOPATH}
+        GOPROJECT: ${GOPROJECT}
+    volumes:
+      - ../../../:/${GOPATH}/src/${GOPROJECT}
+    ports:
+      - ${PORT}:${PORT}
+    user: contint
+    entrypoint: delivery/docker/dev/entrypoint.sh
+    command: tail -f /dev/null
+    environment:
+      MONGO_URL: localhost
+      LOG_LEVEL: DEBUG
