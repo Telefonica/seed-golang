@@ -150,7 +150,7 @@ publish:
 
 deploy:
 	$(info) "Deploying the service $(DOCKER_IMAGE):$(BUILD_VERSION) in environment $(ENVIRONMENT)"
-	docker-compose $(DOCKER_ARGS) -p "$(DOCKER_PROJECT)$(ENVIRONMENT)" -f delivery/deploy/docker-compose.yml up
+	docker-compose $(DOCKER_ARGS) -p "$(DOCKER_PROJECT)$(ENVIRONMENT)" -f delivery/deploy/docker-compose.yml up -d
 
 undeploy:
 	$(info) "Undeploying the service $(DOCKER_IMAGE):$(BUILD_VERSION) in environment $(ENVIRONMENT)"

@@ -1,5 +1,5 @@
-[![Build Status](https://dcip.hi.inet/job/jorgelg/job/seed-golang/job/pipeline-02-dev/badge/icon)](https://dcip.hi.inet/job/jorgelg/job/seed-golang/job/pipeline-02-dev)
-[![DockerHub](https://img.shields.io/docker/automated/jrottenberg/ffmpeg.svg)](http://artifactory.hi.inet/artifactory/webapp/#/artifacts/browse/simple/General/docker/Telefonica/seed-golang)
+[![Build Status](https://dcip.hi.inet/buildStatus/icon?job=jorgelg/seed-golang/pipeline-02-dev)](https://dcip.hi.inet/job/jorgelg/job/seed-golang/job/pipeline-02-dev/)
+[![DockerHub](https://img.shields.io/docker/automated/jrottenberg/ffmpeg.svg)](http://artifactory.hi.inet/artifactory/webapp/#/artifacts/browse/tree/General/docker/telefonica/seed-golang)
 
 # seed-golang
 
