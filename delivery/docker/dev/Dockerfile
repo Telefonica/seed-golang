@@ -10,7 +10,7 @@ RUN apk update && \
                        mongodb
 
 # Install python packages for tests
-RUN pip install lettuce python-Levenshtein requests
+RUN pip install lettuce python-Levenshtein requests docker-compose
 
 # Configure mongodb data volume
 RUN mkdir -p /data/db && chown -R mongodb:mongodb /data/db
