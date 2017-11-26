@@ -2,6 +2,6 @@
   "address": ":9000",
   "basePath": "/seed",
   "logLevel": "INFO",
-  "mongoUrl": "localhost",
+  "mongoUrl": "127.0.0.1",
   "mongoDatabase": "seed"
 }

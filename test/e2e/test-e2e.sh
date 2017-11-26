@@ -1,7 +1,7 @@
 #!/bin/bash -e
 
 cd $(dirname $BASH_SOURCE)
-if [ "${SEED_SERVER}" == "" ]; then
+if [ "${ENVIRONMENT}" == "pull" ]; then
     cd ../../build/bin 
     ./seed > ../seed.log &
     echo $! > ../seed.pid
@@ -11,7 +11,7 @@ if [ "${SEED_SERVER}" == "" ]; then
 fi
 lettuce
 EXIT_CODE=$?
-if [ "${SEED_SERVER}" == "" ]; then
+if [ "${ENVIRONMENT}" == "pull" ]; then
     cd ../../build
     kill "$(cat seed.pid)"
     rm -f seed.log seed.pid

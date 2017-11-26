@@ -3,7 +3,7 @@ import json
 import os
 import requests
 
-SEED_SERVER = os.environ.get('SEED_SERVER', 'http://localhost:9000')
+SEED_SERVER = os.environ.get('SEED_SERVER', 'http://127.0.0.1:9000')
 
 def clean_empty_from_dict(**kwargs):
     for k in kwargs.keys():
