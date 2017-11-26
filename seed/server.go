@@ -35,13 +35,13 @@ type Server struct {
 	validator *govice.Validator
 }
 
-// NewServer creates a new instance of the orchestrator service.
+// NewServer creates a new instance of the service.
 func NewServer(config *Config, validator *govice.Validator) (*Server, error) {
 	s := &Server{Config: config, validator: validator}
 	return s, nil
 }
 
-// Start the orchestrator service. It also configures the proxies to niji and nijiHome.
+// Start the service.
 func (s *Server) Start() error {
 	if s.server != nil {
 		return fmt.Errorf("Server is already started")
@@ -57,7 +57,7 @@ func (s *Server) Start() error {
 	return s.server.ListenAndServe()
 }
 
-// Stop the orchestrator service.
+// Stop the service.
 func (s *Server) Stop() error {
 	if s.server != nil {
 		s.server.Shutdown(nil)

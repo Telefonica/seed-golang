@@ -38,7 +38,7 @@ func main() {
 	}
 	logger := govice.NewLogger()
 	logger.SetLogContext(&logContext)
-	alarmContext := &govice.LogContext{Alarm: "ALARM_INIT"}
+	alarmContext := &govice.LogContext{Alarm: seed.AlarmInit}
 
 	// Prepare the configuration
 	cfgFile := flag.String("config", "./config.json", "path to config file")
