@@ -5,6 +5,8 @@
 
 Seed project for Go language.
 
+This project aims to provide an archetype of Go project, with a common scheleton that includes a development environment and a continuous delivery pipeline (integrated with dcip). It also builds the service with [govice](https://github.com/Telefonica/govice) to generate JSON logs, manage the configuration, handle errors and alarms, and validate JSON documents.
+
 ## Building the project
 
 ### Makefile usage
