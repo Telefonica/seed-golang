@@ -193,6 +193,7 @@ The following log traces correspond to a conflict with a port that is already in
   - Execution is parameterized:
     - Add boolean value. Name: RELEASE.
     - Add text parameter. Name: GIT_REVISION. Default: master.
+    - Add password parameter. Name: GITHUB_TOKEN. Default: Token generated with all repo permissions.
   - Git:
     - Empty Refspec
     - Branches to build: ${GIT_REVISION}
@@ -209,11 +210,12 @@ The following log traces correspond to a conflict with a port that is already in
   - Actions:
     - Remove "Set build status on Github commit"
 
-### GitHub WebHooks
+### GitHub Configuration
 
 See [Git WebHooks in DCIP](https://wikis.hi.inet/epg/index.php/DCIP#Git_webhooks).
 
 - Add team `CI (w+r)` with "write" permissions
+- Generate a [personal access token](https://github.com/settings/tokens) with all the repo permissions. Note that this token is required to generate the tag and publish the release notes. This is configured with environment variable `GITHUB_TOKEN`.
 - Add webhook for Pull request:
   - Payload URL: "http://dcip.tid.es/ghprbhook/"
   - Content type: "application/x-www-form-urlencoded"
