@@ -169,7 +169,7 @@ The following log traces correspond to a conflict with a port that is already in
   - Restrict project to: seed-golang
   - Use a custom workspace directory: /home/contint/go/src/github.com/Telefonica/seed-golang
   - Git:
-    - Repository URL: git@github.com:Telefonica/seed-golang.git
+    - Repository URL: https://github.com/Telefonica/seed-golang/
       - Refspec: +refs/pull/*:refs/remotes/origin/pr/*
     - Branches to build: ${sha1}
   - Trigger:
