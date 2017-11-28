@@ -7,19 +7,34 @@ RELEASE="${RELEASE:-false}"
 # Get the server from the git URL.
 # For example, from git URL "git@pdihub.hi.inet:awazza/niji-blocking.git", the server is "pdihub.hi.inet".
 get_server() {
-    git config --get remote.origin.url | cut -d: -f1 | cut -d@ -f2
+    local origin="$(git config --get remote.origin.url)"
+    case "${origin}" in
+        git@*) echo "${origin}" | cut -d: -f1 | cut -d@ -f2 ;;
+        https:*) echo "${origin}" | cut -d/ -f3 ;;
+        *) return 1 ;;
+    esac
 }
 
 # Get the user (or organization) from the git URL.
 # For example, from git URL "git@pdihub.hi.inet:awazza/niji-blocking.git", the server is "awazza".
 get_user() {
-    git config --get remote.origin.url | cut -d: -f2 | cut -d/ -f1
+    local origin="$(git config --get remote.origin.url)"
+    case "${origin}" in
+        git@*) echo "${origin}" | cut -d: -f2 | cut -d/ -f1 ;;
+        https:*) echo "${origin}" | cut -d/ -f4 ;;
+        *) return 1 ;;
+    esac
 }
 
 # Get the repository from the git URL.
 # For example, from git URL "git@pdihub.hi.inet:awazza/niji-blocking.git", the repository "niji-blocking".
 get_repo() {
-    basename $(git config --get remote.origin.url | cut -d/ -f2) .git
+    local origin="$(git config --get remote.origin.url)"
+    case "${origin}" in
+        git@*) basename $(echo "${origin}" | cut -d/ -f2) .git ;;
+        https:*) basename $(echo "${origin}" | cut -d/ -f5) .git ;;
+        *) return 1 ;;
+    esac
 }
 
 # Get the API to interact with git server.
