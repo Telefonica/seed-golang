@@ -60,6 +60,11 @@ get_version() {
     [ "${RELEASE}" == "true" ] && get_next_version || get_last_tag
 }
 
+# Get the current branch.
+get_branch() {
+    git rev-parse --abbrev-ref HEAD
+}
+
 # Get revision with the format: ${number_of_commits}.g${sha}
 # If it is a release, the number of commits is 0 (because the release would create a tag for this commit).
 # If it is not a release, the number of commits is counted since the last tag. However, if there is no tag available,
@@ -76,6 +81,22 @@ get_revision() {
         commits="$(git rev-list --count ${last_tag}..HEAD)"
     fi
     echo "${commits}.g${sha}"
+}
+
+# Get revision extended with the branch name if it is not the standard branches: "master" or "develop".
+# If it is a standard branch, the output is the same as in get_revision.
+# Otherwise, the format is: ${number_of_commits}.g${sha}-${branch} where the branch is modified to replace the / characters as -.
+get_branched_revision() {
+    local revision=$(get_revision)
+    local branch=$(get_branch | tr '/' '-')
+    case "${branch}" in
+        "master" | "develop" | "")
+            echo "${revision}"
+            ;;
+        *)
+            echo "${revision}-${branch}"
+            ;;
+    esac
 }
 
 # Get the release notes from a last tag to HEAD.
