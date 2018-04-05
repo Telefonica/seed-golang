@@ -21,7 +21,7 @@ DOCKER_COMPOSE_ENV       := GOPATH="$(DOCKER_COMPOSE_GOPATH)" GOPROJECT="$(DOCKE
 DOCKER_COMPOSE           := $(DOCKER_COMPOSE_ENV) docker-compose -p "$(DOCKER_COMPOSE_PROJECT)" -f "$(DOCKER_COMPOSE_FILE)"
 
 PRODUCT_VERSION          ?= $(shell delivery/scripts/github.sh get_version)
-PRODUCT_REVISION         ?= $(shell delivery/scripts/github.sh get_revision)
+PRODUCT_REVISION         ?= $(shell delivery/scripts/github.sh get_branched_revision)
 BUILD_VERSION            ?= $(PRODUCT_VERSION)-$(PRODUCT_REVISION)
 LDFLAGS_OPTIMIZATION     ?= -w -s
 LDFLAGS_VERSION          ?= -X main.Version=$(BUILD_VERSION)
