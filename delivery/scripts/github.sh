@@ -90,7 +90,7 @@ get_branched_revision() {
     local revision=$(get_revision)
     local branch=$(get_branch | tr '/' '-')
     case "${branch}" in
-        "master" | "develop" | "")
+        "master" | "develop" | "HEAD" | "")
             echo "${revision}"
             ;;
         *)
@@ -106,4 +106,4 @@ get_release_notes() {
     git log "${range}" --pretty=format:' - [%h] %s'
 }
 
-$@
+"$@"

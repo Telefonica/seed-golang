@@ -16,6 +16,8 @@ slack_msg() {
   local channel="$3"
   local message="$4"
 
+  echo $message
+
   if [ -z "$url" ] || [ -z "$token" ] || [ -z "$channel" ]; then
     return
   fi
@@ -27,4 +29,4 @@ slack_msg() {
        "$url"
 }
 
-$@
+"$@"
