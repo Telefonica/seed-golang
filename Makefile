@@ -27,6 +27,10 @@ LDFLAGS_OPTIMIZATION     ?= -w -s
 LDFLAGS_VERSION          ?= -X main.Version=$(BUILD_VERSION)
 LDFLAGS                  ?= $(LDFLAGS_OPTIMIZATION) $(LDFLAGS_VERSION)
 
+SLACK_URL                ?= https://slack.com/api/chat.postMessage
+SLACK_TOKEN              ?= 
+SLACK_CHANNEL            ?= 
+
 # Get the environment and import the settings.
 # If the make target is pipeline-xxx, the environment is obtained from the target.
 ifeq ($(patsubst pipeline-%,%,$(MAKECMDGOALS)),$(MAKECMDGOALS))
@@ -185,6 +189,7 @@ pipeline-pull: build test-e2e-local
 
 pipeline-dev:  build test-e2e-local package publish deploy test-e2e undeploy promote release
 	$(info) "Completed successfully pipeline-dev"
+	$(slack_msg) "Docker image built successfully: $(DOCKER_IMAGE):$(BUILD_VERSION)"
 
 pipeline:      pipeline-$(ENVIRONMENT)
 
@@ -204,3 +209,4 @@ develenv-down:
 info := @printf "\033[32;01m%s\033[0m\n"
 get_packages := $$(go list ./... | grep -v /vendor/)
 get_release_notes := $$(delivery/scripts/github.sh get_release_notes)
+slack_msg := delivery/scripts/slack.sh slack_msg "$(SLACK_URL)" "$(SLACK_TOKEN)" "$(SLACK_CHANNEL)"

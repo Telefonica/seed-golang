@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 
 TAG_PATTERN='[0-9].[0-9]'
 DEFAULT_VERSION="0.0"
